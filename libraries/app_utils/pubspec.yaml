@@ -14,18 +14,13 @@ dependencies:
 
   design_system:
     path: ../design_system
-  persian_tools:
-    git: https://github.com/erfanegtfi/dart-persian-tools
-    
+  data:
+    path: ../data
+
+  freezed_annotation: ^2.4.4
+  freezed: ^2.5.7
   sprintf: ^7.0.0
-  jalali_table_calendar: ^1.2.0
-  url_launcher: ^6.3.1
-  # android_id: ^0.4.0
-  decimal: ^3.1.0
-  package_info_plus: ^8.1.2
   device_info_plus: ^11.2.0
-  # persian_tools: ^1.0.3
-  uuid: ^4.5.1
 
 dev_dependencies:
   flutter_test:
@@ -33,7 +28,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
   mocktail: ^1.0.1
-
 
 flutter:
 

@@ -17,7 +17,7 @@ class FlavorConfig {
     _apiBaseDomain = apiUrl;
   }
 
-  void setApiBaseDomainDev(String apiKey) {
+  void setApiKey(String apiKey) {
     _apiKey = apiKey;
   }
 
