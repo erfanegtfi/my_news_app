@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:design_system/resources/export_app_res.dart';
 import 'package:my_news_app/features/news/presenter/news_list_screen.dart';
-import 'package:my_news_app/main/di/locator.dart';
+import 'package:my_news_app/data/di/locator.dart';
 import 'package:my_news_app/navigation/navigation_service.dart';
 
 class MyApp extends ConsumerStatefulWidget {

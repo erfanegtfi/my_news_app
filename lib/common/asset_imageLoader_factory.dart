@@ -1,6 +1,6 @@
 import 'package:app_widgets/image/image_loader.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:my_news_app/main/di/locator.dart';
+import 'package:my_news_app/data/di/locator.dart';
 
 /// factory
 Widget loadAssetImage(String? asset) {

@@ -2,7 +2,10 @@ import 'package:floor/floor.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_news_app/features/news/domain/entities/news_model.dart';
 
+part 'news_data_model.g.dart';
+
 @Entity(tableName: "News")
+@JsonSerializable()
 class NewsDataModel {
   @PrimaryKey(autoGenerate: false)
   @JsonKey(name: "title")
@@ -21,7 +24,15 @@ class NewsDataModel {
   @ColumnInfo(name: "content")
   String? content;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @ColumnInfo(name: "query")
+  String? query;
+
   NewsDataModel({this.title, this.description, this.urlToImage, this.publishedAt, this.content});
+
+  factory NewsDataModel.fromJson(Map<String, dynamic> json) => _$NewsDataModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$NewsDataModelToJson(this);
 
   News toEntity() {
     return News(
@@ -30,6 +41,7 @@ class NewsDataModel {
       urlToImage: urlToImage,
       publishedAt: publishedAt,
       content: content,
+      query: query,
     );
   }
 }

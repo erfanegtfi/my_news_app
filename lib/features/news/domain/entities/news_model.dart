@@ -4,6 +4,7 @@ class News {
   String? urlToImage;
   String? publishedAt;
   String? content;
+  String? query;
 
-  News({this.title, this.description, this.urlToImage, this.publishedAt, this.content});
+  News({this.title, this.description, this.urlToImage, this.publishedAt, this.content, this.query});
 }
