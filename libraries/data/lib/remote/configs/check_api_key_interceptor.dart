@@ -8,7 +8,9 @@ class CheckApiKeyInterceptor extends Interceptor {
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     final addUserAgent = options.extra['apiKey'] ?? false;
     if (addUserAgent) {
-      options.path = "${options.path}&apiKey=${ApiEndPoint.apiKey}";
+      options.queryParameters.addAll({
+        'apiKey': ApiEndPoint.apiKey,
+      });
     }
 
     super.onRequest(options, handler);

@@ -16,7 +16,6 @@ dependencies:
   app_utils:
     path: ../app_utils
     
-  intl: ^0.20.1
   fluttertoast: ^8.2.1
   flutter_riverpod: ^2.6.1
 

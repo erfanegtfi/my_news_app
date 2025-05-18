@@ -1,4 +1,5 @@
 import 'package:data/model/list_response.dart';
+import 'package:data/remote/configs/annotations.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_news_app/features/news/data/models/news_data_model.dart';
 import 'package:retrofit/retrofit.dart';
@@ -12,6 +13,7 @@ abstract class NewsRestClient {
   @factoryMethod
   factory NewsRestClient(Dio dio, {@Named("baseUrl") String baseUrl}) = _NewsRestClient;
 
+  @appendApiKey
   @GET("everything")
   Future<ListResponse<NewsDataModel>> getAllNews({
     @Query("q") String? query,

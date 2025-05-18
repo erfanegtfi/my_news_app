@@ -12,19 +12,16 @@ class NewsListAsStreamUsecase {
 
   NewsListAsStreamUsecase({required this.newsRepository});
 
-  Stream<List<News>?> call(NewsParam params, RepositoryStrategy strategy) {
+  Stream<List<News>?> call(NewsOfflineParam params) {
     return newsRepository.getAllNewsAsStream(params);
   }
 }
 
-// class NewsParam {
-//   // List<String>? querys;
-//   String query;
-//   String fromDate;
-//   String toDate;
-//   String sortBy;
-//   int? page;
-//   int? pageSize;
+class NewsOfflineParam {
+  List<String>? queries;
+  String fromDate;
+  String toDate;
+  String sortBy;
 
-//   NewsParam(this.query, this.fromDate, this.toDate, this.sortBy, this.page, this.pageSize);
-// }
+  NewsOfflineParam(this.queries, this.fromDate, this.toDate, this.sortBy);
+}

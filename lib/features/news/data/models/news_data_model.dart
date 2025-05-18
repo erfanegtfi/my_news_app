@@ -4,7 +4,7 @@ import 'package:my_news_app/features/news/domain/entities/news_model.dart';
 
 part 'news_data_model.g.dart';
 
-@Entity(tableName: "News")
+@Entity(tableName: "news")
 @JsonSerializable()
 class NewsDataModel {
   @PrimaryKey(autoGenerate: false)
@@ -25,7 +25,7 @@ class NewsDataModel {
   String? content;
 
   @JsonKey(includeFromJson: false, includeToJson: false)
-  @ColumnInfo(name: "query")
+  @ColumnInfo(name: "qu")
   String? query;
 
   NewsDataModel({this.title, this.description, this.urlToImage, this.publishedAt, this.content});

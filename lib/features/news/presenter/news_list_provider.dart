@@ -1,8 +1,12 @@
+import 'package:app_utils/constants.dart';
+import 'package:app_utils/utils.dart';
 import 'package:data/model/index_app_response.dart';
 import 'package:app_utils/view_state.dart';
 import 'package:data/repository_strategy.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
+import 'package:my_news_app/features/news/domain/entities/enums/news_query.dart';
+import 'package:my_news_app/features/news/domain/entities/enums/sort_by.dart';
 import 'package:my_news_app/features/news/domain/entities/news_model.dart';
 import 'package:my_news_app/features/news/domain/usecases/news_list_as_stream_usecase.dart';
 import 'package:my_news_app/features/news/domain/usecases/news_list_usecase.dart';
@@ -18,14 +22,41 @@ class NewsProviderNotifier extends StateNotifier<ViewState<List<News>>> {
 
   final Ref ref;
   List<News> allNews = [];
+  int page = 1;
+  late final String _fromDate;
+  late final String _toDate;
 
   NewsProviderNotifier(
     this.newsListAsStreamUsecase,
     this.newsListUsecase,
     this.ref,
-  ) : super(ViewState.init());
+  ) : super(ViewState.init()) {
+    _fromDate = Utils.getPassedDate(2);
+    _toDate = Utils.getCurrentDate();
 
-  void getAllnewsList(NewsParam params) async {
+    NewsOfflineParam param = NewsOfflineParam(NewsQuery.values.map((e) => e.apiQuery).toList(), _fromDate, _toDate, SortBy.newest.title);
+    newsListAsStreamUsecase.call(param).listen(
+      (event) {
+        if (event != null) allNews.addAll(event);
+        state = ViewState.success(allNews);
+        print("${event?.length}");
+      },
+    );
+  }
+
+  void getAllNewsList({bool resetPage = false}) {
+    if (resetPage) {
+      page = 1;
+      allNews.clear();
+    }
+
+    for (var query in NewsQuery.values) {
+      _callApi(NewsParam(query.apiQuery, _fromDate, _toDate, SortBy.newest.title, page, Constants.LIST_PAGE_SIZE));
+    }
+    page++;
+  }
+
+  void _callApi(NewsParam params) async {
     state = ViewState.loading();
     DataResponse<List<News>?> request = await newsListUsecase(params, RepositoryStrategy.remote);
     request.when(

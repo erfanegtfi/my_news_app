@@ -96,7 +96,7 @@ class _$NewsDatabase extends NewsDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `News` (`title` TEXT, `description` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT, `query` TEXT, PRIMARY KEY (`title`))');
+            'CREATE TABLE IF NOT EXISTS `news` (`title` TEXT, `description` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT, `qu` TEXT, PRIMARY KEY (`title`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -117,40 +117,14 @@ class _$NewstDao extends NewstDao {
   )   : _queryAdapter = QueryAdapter(database, changeListener),
         _newsDataModelInsertionAdapter = InsertionAdapter(
             database,
-            'News',
+            'news',
             (NewsDataModel item) => <String, Object?>{
                   'title': item.title,
                   'description': item.description,
                   'urlToImage': item.urlToImage,
                   'publishedAt': item.publishedAt,
                   'content': item.content,
-                  'query': item.query
-                },
-            changeListener),
-        _newsDataModelUpdateAdapter = UpdateAdapter(
-            database,
-            'News',
-            ['title'],
-            (NewsDataModel item) => <String, Object?>{
-                  'title': item.title,
-                  'description': item.description,
-                  'urlToImage': item.urlToImage,
-                  'publishedAt': item.publishedAt,
-                  'content': item.content,
-                  'query': item.query
-                },
-            changeListener),
-        _newsDataModelDeletionAdapter = DeletionAdapter(
-            database,
-            'News',
-            ['title'],
-            (NewsDataModel item) => <String, Object?>{
-                  'title': item.title,
-                  'description': item.description,
-                  'urlToImage': item.urlToImage,
-                  'publishedAt': item.publishedAt,
-                  'content': item.content,
-                  'query': item.query
+                  'qu': item.query
                 },
             changeListener);
 
@@ -162,40 +136,48 @@ class _$NewstDao extends NewstDao {
 
   final InsertionAdapter<NewsDataModel> _newsDataModelInsertionAdapter;
 
-  final UpdateAdapter<NewsDataModel> _newsDataModelUpdateAdapter;
-
-  final DeletionAdapter<NewsDataModel> _newsDataModelDeletionAdapter;
-
   @override
   Future<List<NewsDataModel>> getAllNews(
-    String query,
+    List<String> queries,
     String fromDate,
     String toDate,
     String sortBy,
   ) async {
+    const offset = 4;
+    final _sqliteVariablesForQueries =
+        Iterable<String>.generate(queries.length, (i) => '?${i + offset}')
+            .join(',');
     return _queryAdapter.queryList(
-        'SELECT * FROM News    WHERE query = ?1    AND publishedAt BETWEEN ?2 AND ?3   ORDER BY      CASE ?4       WHEN \'newest\' THEN publishedAt END DESC,     CASE ?4       WHEN \'oldest\' THEN publishedAt END ASC',
+        'SELECT * FROM news    WHERE qu IN (' +
+            _sqliteVariablesForQueries +
+            ')   AND publishedAt BETWEEN ?1 AND ?2   ORDER BY      CASE ?3 WHEN \'newest\' THEN publishedAt END DESC,     CASE ?3 WHEN \'oldest\' THEN publishedAt END ASC',
         mapper: (Map<String, Object?> row) => NewsDataModel(title: row['title'] as String?, description: row['description'] as String?, urlToImage: row['urlToImage'] as String?, publishedAt: row['publishedAt'] as String?, content: row['content'] as String?),
-        arguments: [query, fromDate, toDate, sortBy]);
+        arguments: [fromDate, toDate, sortBy, ...queries]);
   }
 
   @override
   Stream<List<NewsDataModel>> getAllNewsAsStream(
-    String query,
+    List<String> queries,
     String fromDate,
     String toDate,
     String sortBy,
   ) {
+    const offset = 4;
+    final _sqliteVariablesForQueries =
+        Iterable<String>.generate(queries.length, (i) => '?${i + offset}')
+            .join(',');
     return _queryAdapter.queryListStream(
-        'SELECT * FROM News    WHERE query = ?1    AND publishedAt BETWEEN ?2 AND ?3   ORDER BY      CASE ?4       WHEN \'newest\' THEN publishedAt END DESC,     CASE ?4       WHEN \'oldest\' THEN publishedAt END ASC',
+        'SELECT * FROM news    WHERE qu IN (' +
+            _sqliteVariablesForQueries +
+            ')   AND publishedAt BETWEEN ?1 AND ?2   ORDER BY      CASE ?3 WHEN \'newest\' THEN publishedAt END DESC,     CASE ?3 WHEN \'oldest\' THEN publishedAt END ASC',
         mapper: (Map<String, Object?> row) => NewsDataModel(
             title: row['title'] as String?,
             description: row['description'] as String?,
             urlToImage: row['urlToImage'] as String?,
             publishedAt: row['publishedAt'] as String?,
             content: row['content'] as String?),
-        arguments: [query, fromDate, toDate, sortBy],
-        queryableName: 'News',
+        arguments: [fromDate, toDate, sortBy, ...queries],
+        queryableName: 'news',
         isView: false);
   }
 
@@ -203,16 +185,5 @@ class _$NewstDao extends NewstDao {
   Future<void> insertNews(List<NewsDataModel> news) async {
     await _newsDataModelInsertionAdapter.insertList(
         news, OnConflictStrategy.replace);
-  }
-
-  @override
-  Future<void> updateNews(List<NewsDataModel> news) async {
-    await _newsDataModelUpdateAdapter.updateList(
-        news, OnConflictStrategy.replace);
-  }
-
-  @override
-  Future<void> deleteNews(NewsDataModel news) async {
-    await _newsDataModelDeletionAdapter.delete(news);
   }
 }

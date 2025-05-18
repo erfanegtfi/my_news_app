@@ -6,10 +6,6 @@ import 'package:data/remote/exception/network_connection_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 
-class BaseRepository {
-  BaseRepository();
-}
-
 Future<DataResponse<T>> runService<T>({
   required Future<DataResponse<T>> Function() apiCall,
   DataResponse<T> Function(DioException error)? onDioError,

@@ -30,7 +30,7 @@ class _NewsRestClient implements NewsRestClient {
     int? page,
     int? pageSize,
   }) async {
-    final _extra = <String, dynamic>{};
+    final _extra = <String, dynamic>{'apiKey': true};
     final queryParameters = <String, dynamic>{
       r'q': query,
       r'from': fromDate,

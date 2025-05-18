@@ -1,6 +1,7 @@
 enum NewsQuery {
   apple("apple"),
-  microspft("microspft"),
+  microspft("microsoft"),
+  google("google"),
   tesla("tesla");
 
   final String apiQuery;
