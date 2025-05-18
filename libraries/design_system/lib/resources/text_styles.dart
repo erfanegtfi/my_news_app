@@ -18,10 +18,10 @@ const TextStyle textTitlelarge = TextStyle(fontSize: 16.0, fontWeight: fontWeigh
 const TextStyle textTitleMedium = TextStyle(fontSize: 14.0, fontWeight: fontWeightMedium);
 const TextStyle textTitleSmall = TextStyle(fontSize: 12.0, fontWeight: fontWeightMedium);
 
-const TextStyle textBodylarge = TextStyle(fontSize: 15.0, fontWeight: fontWeightRegular);
-const TextStyle textBodyMedium = TextStyle(fontSize: 13.0, fontWeight: fontWeightRegular);
-const TextStyle textBodySmall = TextStyle(fontSize: 11.0, fontWeight: fontWeightRegular);
+const TextStyle textBodylarge = TextStyle(fontSize: 16.0, fontWeight: fontWeightRegular);
+const TextStyle textBodyMedium = TextStyle(fontSize: 14.0, fontWeight: fontWeightRegular);
+const TextStyle textBodySmall = TextStyle(fontSize: 12.0, fontWeight: fontWeightRegular);
 
-const TextStyle textLablelarge = TextStyle(fontSize: 15.0, fontWeight: fontWeightRegular, letterSpacing: 0);
-const TextStyle textLableMedium = TextStyle(fontSize: 13.0, fontWeight: fontWeightRegular, letterSpacing: 0);
-const TextStyle textLableSmall = TextStyle(fontSize: 11.0, fontWeight: fontWeightRegular, letterSpacing: 0);
+const TextStyle textLablelarge = TextStyle(fontSize: 16.0, fontWeight: fontWeightRegular, letterSpacing: 0);
+const TextStyle textLableMedium = TextStyle(fontSize: 14.0, fontWeight: fontWeightRegular, letterSpacing: 0);
+const TextStyle textLableSmall = TextStyle(fontSize: 12.0, fontWeight: fontWeightRegular, letterSpacing: 0);

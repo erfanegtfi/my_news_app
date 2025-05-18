@@ -6,31 +6,25 @@ abstract class NewstDao {
   @Query("""
   SELECT * FROM news 
   WHERE qu IN (:queries)
-  AND publishedAt BETWEEN :fromDate AND :toDate
-  ORDER BY 
-    CASE :sortBy WHEN 'newest' THEN publishedAt END DESC,
-    CASE :sortBy WHEN 'oldest' THEN publishedAt END ASC
+  AND publishedAt >= :fromDate AND publishedAt <= :toDate
+  ORDER BY publishedAt DESC
   """)
   Future<List<NewsDataModel>> getAllNews(
     List<String> queries,
     String fromDate,
     String toDate,
-    String sortBy,
   );
 
   @Query("""
   SELECT * FROM news 
   WHERE qu IN (:queries)
-  AND publishedAt BETWEEN :fromDate AND :toDate
-  ORDER BY 
-    CASE :sortBy WHEN 'newest' THEN publishedAt END DESC,
-    CASE :sortBy WHEN 'oldest' THEN publishedAt END ASC
+  AND publishedAt >= :fromDate AND publishedAt <= :toDate
+  ORDER BY publishedAt DESC
   """)
   Stream<List<NewsDataModel>> getAllNewsAsStream(
     List<String> queries,
     String fromDate,
     String toDate,
-    String sortBy,
   );
 
   @Insert(onConflict: OnConflictStrategy.replace)

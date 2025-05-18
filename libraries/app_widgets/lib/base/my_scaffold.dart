@@ -26,19 +26,16 @@ class MyScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        key: scaffoldKey,
-        backgroundColor: backgroundColor ?? theme.scaffoldBackgroundColor,
-        floatingActionButtonLocation: floatingActionButtonLocation,
-        floatingActionButton: floatingActionButton,
-        appBar: appBar,
-        bottomNavigationBar: bottomNavigationBar,
-        resizeToAvoidBottomInset: resizeToAvoidBottomInset ?? true,
-        extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
-        body: body,
-      ),
+    return Scaffold(
+      key: scaffoldKey,
+      backgroundColor: backgroundColor ?? theme.scaffoldBackgroundColor,
+      floatingActionButtonLocation: floatingActionButtonLocation,
+      floatingActionButton: floatingActionButton,
+      appBar: appBar,
+      bottomNavigationBar: bottomNavigationBar,
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset ?? true,
+      extendBodyBehindAppBar: extendBodyBehindAppBar ?? false,
+      body: body,
     );
   }
 }

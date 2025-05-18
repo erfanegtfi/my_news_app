@@ -31,13 +31,17 @@ class NewsProviderNotifier extends StateNotifier<ViewState<List<News>>> {
     this.newsListUsecase,
     this.ref,
   ) : super(ViewState.init()) {
-    _fromDate = Utils.getPassedDate(2);
+    _fromDate = Utils.getPassedDate(1);
     _toDate = Utils.getCurrentDate();
 
-    NewsOfflineParam param = NewsOfflineParam(NewsQuery.values.map((e) => e.apiQuery).toList(), _fromDate, _toDate, SortBy.newest.title);
+    NewsOfflineParam param =
+        NewsOfflineParam(NewsQuery.values.map((e) => e.apiQuery).toList(), _fromDate, _toDate, SortBy.publishedAt.title);
     newsListAsStreamUsecase.call(param).listen(
       (event) {
-        if (event != null) allNews.addAll(event);
+        if (event != null) {
+          allNews.clear();
+          allNews.addAll(event);
+        }
         state = ViewState.success(allNews);
         print("${event?.length}");
       },
@@ -51,14 +55,14 @@ class NewsProviderNotifier extends StateNotifier<ViewState<List<News>>> {
     }
 
     for (var query in NewsQuery.values) {
-      _callApi(NewsParam(query.apiQuery, _fromDate, _toDate, SortBy.newest.title, page, Constants.LIST_PAGE_SIZE));
+      _callApi(NewsParam(query.apiQuery, _fromDate, _toDate, SortBy.publishedAt.title, page, Constants.LIST_PAGE_SIZE));
     }
     page++;
   }
 
   void _callApi(NewsParam params) async {
     state = ViewState.loading();
-    DataResponse<List<News>?> request = await newsListUsecase(params, RepositoryStrategy.remote);
+    DataResponse<List<News>?> request = await newsListUsecase(params);
     request.when(
       success: (news) {},
       error: (error) {

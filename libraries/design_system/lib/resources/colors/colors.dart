@@ -10,6 +10,7 @@ abstract class MyColors {
 
   Color get white;
   Color get black;
+  Color get gray;
 
   Color get listDivider;
   Color get icon;

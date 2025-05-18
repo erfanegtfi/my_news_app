@@ -1,6 +1,5 @@
 enum SortBy {
-  newest("newest"),
-  oldest("oldest");
+  publishedAt("publishedAt");
 
   final String title;
   const SortBy(this.title);

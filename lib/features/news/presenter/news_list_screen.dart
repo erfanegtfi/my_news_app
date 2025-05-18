@@ -2,12 +2,16 @@
 
 import 'package:app_utils/view_state.dart';
 import 'package:app_widgets/base/base_screen.dart';
+import 'package:app_widgets/widget_item_not_found.dart';
+import 'package:data/remote/exception/network_connection_exception.dart';
 import 'package:design_system/resources/export_app_res.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_news_app/features/news/domain/entities/news_model.dart';
+import 'package:app_widgets/utils_message.dart';
 
+import 'item_news_list.dart';
 import 'news_list_provider.dart';
 
 class NewsListScreen extends BaseScreen {
@@ -52,13 +56,22 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
         loading: () => Center(child: CircularProgressIndicator()),
         success: (news) {
           if (news.isNotEmpty) {
-            return ListView.builder(itemBuilder: (context, index) => Text(news[index].title ?? ""), itemCount: news.length);
+            return ListView.builder(
+                itemBuilder: (context, index) => NewsItem(
+                      theme: theme,
+                      index: index,
+                      news: news[index],
+                      onTap: () {},
+                    ),
+                itemCount: news.length);
           } else {
-            return ListView(children: [SizedBox(height: 100.h), const Text("--------")]);
+            return ListView(children: [SizedBox(height: 200.h), const ItemNotFoundWidget(message: AppText.newsNotFound)]);
           }
         },
-        serverError: (error) => const SizedBox(),
-        orElse: () => const SizedBox(),
+        serverError: (error) {
+          return ListView(children: [SizedBox(height: 200.h), const ItemNotFoundWidget(message: AppText.errorUnknown)]);
+        },
+        orElse: () => ItemNotFoundWidget(message: AppText.errorUnknown),
       );
     });
   }
@@ -75,7 +88,15 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
 
   setupNewsProviderListener() {
     ref.listen<ViewState<List<News>>>(newsProvider, (previous, next) {
-      next.maybeWhen(orElse: () {}, serverError: (error) {});
+      next.maybeWhen(
+          orElse: () {},
+          serverError: (error) {
+            if (error is NetworkConnectionException) {
+              showToast(AppText.errorNetworkConnection);
+            } else {
+              showToast(AppText.errorUnknown);
+            }
+          });
     });
   }
 }

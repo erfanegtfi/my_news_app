@@ -28,14 +28,15 @@ class NewsRepositoryImpl implements NewsRepository {
       apiCall: () async {
         ListResponse<NewsDataModel> response = await newsRemoteDataSource.getAllNews(params);
         if (response.articles != null && response.articles?.isNotEmpty == true) {
-          List<News> articles = response.articles!.map((news) {
+          List<News> newsList = [];
+          for (var news in response.articles!) {
             news.query = params.query;
-            return news.toEntity();
-          }).toList();
+            newsList.add(news.toEntity());
+          }
 
           newsLocalDataSource.insertNews(response.articles!);
 
-          return DataResponse.success(articles);
+          return DataResponse.success(newsList);
         } else {
           return DataResponse.success(List.empty());
         }

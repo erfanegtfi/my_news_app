@@ -10,7 +10,7 @@ class NewsListUsecase {
 
   NewsListUsecase({required this.newsRepository});
 
-  Future<DataResponse<List<News>?>> call(NewsParam params, RepositoryStrategy strategy) {
+  Future<DataResponse<List<News>?>> call(NewsParam params) {
     return newsRepository.getAllNewsRemote(params);
   }
 }
@@ -33,7 +33,6 @@ class NewsListUsecase {
 // }
 
 class NewsParam {
-  // List<String>? querys;
   String query;
   String fromDate;
   String toDate;

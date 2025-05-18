@@ -1,5 +1,6 @@
 import 'package:floor/floor.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:my_news_app/features/news/domain/entities/enums/news_query.dart';
 import 'package:my_news_app/features/news/domain/entities/news_model.dart';
 
 part 'news_data_model.g.dart';
@@ -28,7 +29,7 @@ class NewsDataModel {
   @ColumnInfo(name: "qu")
   String? query;
 
-  NewsDataModel({this.title, this.description, this.urlToImage, this.publishedAt, this.content});
+  NewsDataModel({this.title, this.description, this.urlToImage, this.publishedAt, this.content, this.query});
 
   factory NewsDataModel.fromJson(Map<String, dynamic> json) => _$NewsDataModelFromJson(json);
 
@@ -41,7 +42,7 @@ class NewsDataModel {
       urlToImage: urlToImage,
       publishedAt: publishedAt,
       content: content,
-      query: query,
+      query: NewsQuery.fromString(query),
     );
   }
 }

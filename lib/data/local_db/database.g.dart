@@ -141,18 +141,17 @@ class _$NewstDao extends NewstDao {
     List<String> queries,
     String fromDate,
     String toDate,
-    String sortBy,
   ) async {
-    const offset = 4;
+    const offset = 3;
     final _sqliteVariablesForQueries =
         Iterable<String>.generate(queries.length, (i) => '?${i + offset}')
             .join(',');
     return _queryAdapter.queryList(
         'SELECT * FROM news    WHERE qu IN (' +
             _sqliteVariablesForQueries +
-            ')   AND publishedAt BETWEEN ?1 AND ?2   ORDER BY      CASE ?3 WHEN \'newest\' THEN publishedAt END DESC,     CASE ?3 WHEN \'oldest\' THEN publishedAt END ASC',
-        mapper: (Map<String, Object?> row) => NewsDataModel(title: row['title'] as String?, description: row['description'] as String?, urlToImage: row['urlToImage'] as String?, publishedAt: row['publishedAt'] as String?, content: row['content'] as String?),
-        arguments: [fromDate, toDate, sortBy, ...queries]);
+            ')   AND publishedAt >= ?1 AND publishedAt <= ?2   ORDER BY publishedAt DESC',
+        mapper: (Map<String, Object?> row) => NewsDataModel(title: row['title'] as String?, description: row['description'] as String?, urlToImage: row['urlToImage'] as String?, publishedAt: row['publishedAt'] as String?, content: row['content'] as String?, query: row['qu'] as String?),
+        arguments: [fromDate, toDate, ...queries]);
   }
 
   @override
@@ -160,23 +159,23 @@ class _$NewstDao extends NewstDao {
     List<String> queries,
     String fromDate,
     String toDate,
-    String sortBy,
   ) {
-    const offset = 4;
+    const offset = 3;
     final _sqliteVariablesForQueries =
         Iterable<String>.generate(queries.length, (i) => '?${i + offset}')
             .join(',');
     return _queryAdapter.queryListStream(
         'SELECT * FROM news    WHERE qu IN (' +
             _sqliteVariablesForQueries +
-            ')   AND publishedAt BETWEEN ?1 AND ?2   ORDER BY      CASE ?3 WHEN \'newest\' THEN publishedAt END DESC,     CASE ?3 WHEN \'oldest\' THEN publishedAt END ASC',
+            ')   AND publishedAt >= ?1 AND publishedAt <= ?2   ORDER BY publishedAt DESC',
         mapper: (Map<String, Object?> row) => NewsDataModel(
             title: row['title'] as String?,
             description: row['description'] as String?,
             urlToImage: row['urlToImage'] as String?,
             publishedAt: row['publishedAt'] as String?,
-            content: row['content'] as String?),
-        arguments: [fromDate, toDate, sortBy, ...queries],
+            content: row['content'] as String?,
+            query: row['qu'] as String?),
+        arguments: [fromDate, toDate, ...queries],
         queryableName: 'news',
         isView: false);
   }

@@ -13,7 +13,7 @@ class LightColors implements MyColors {
   Color get screenBackground => const Color(0xFFFaFaFa);
 
   @override
-  Color get secondery => Colors.white;
+  Color get secondery => const Color(0xFFF3F4F6);
 
   @override
   Color get textBlack => const Color(0xFF111111);
@@ -35,4 +35,7 @@ class LightColors implements MyColors {
 
   @override
   Color get icon => const Color(0xFF717AA0);
+
+  @override
+  Color get gray => const Color(0xFFe1e5e8);
 }

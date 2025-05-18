@@ -17,12 +17,12 @@ class NewsLocalDataSourceImpl implements NewsLocalDataSource {
 
   @override
   Stream<List<NewsDataModel>> getAllNewsAsStream(NewsOfflineParam params) {
-    return database.newstDao.getAllNewsAsStream(params.queries ?? [], params.fromDate, params.toDate, params.sortBy);
+    return database.newstDao.getAllNewsAsStream(params.queries ?? [], params.fromDate, params.toDate);
   }
 
   @override
   Future<List<NewsDataModel>> getAllNews(NewsOfflineParam params) {
-    return database.newstDao.getAllNews(params.queries ?? [], params.fromDate, params.toDate, params.sortBy); //
+    return database.newstDao.getAllNews(params.queries ?? [], params.fromDate, params.toDate); //  params.sortBy
   }
 
   @override
