@@ -18,7 +18,7 @@ import 'package:my_news_app/features/news/presenter/news_content_screen.dart';
 import 'package:my_news_app/navigation/navigation_service.dart';
 
 import 'item_news_list.dart';
-import 'news_list_provider.dart';
+import 'providers/news_list_provider.dart';
 
 class NewsListScreen extends BaseScreen {
   NewsListScreen({super.key});
@@ -31,12 +31,17 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
   late ThemeData theme;
   late NewsProviderNotifier newsListNotifier;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  ScrollController? controller;
+  final int _scrollThreshold = 800;
+  bool isLoading = false;
 
   NewsListScreenState();
 
   @override
   void initState() {
     super.initState();
+    controller = ScrollController()..addListener(_scrollListener);
+
     newsListNotifier = ref.read(newsProvider.notifier);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -67,9 +72,11 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
         success: (news) {
           if (news.isNotEmpty) {
             return ListView.builder(
+                controller: controller,
                 itemBuilder: (context, index) => NewsItem(
                       theme: theme,
                       news: news[index],
+                      index: index,
                       onTap: () {
                         locator<NavigationService>().push(NewsContentScreen(news: news[index]));
                       },
@@ -98,6 +105,26 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
     return Future.delayed(Duration(milliseconds: 2));
   }
 
+  /// handel scroll listener for pagination
+  void _scrollListener() {
+    if (controller != null) {
+      final double maxScroll = controller!.position.maxScrollExtent;
+      final double currentScroll = controller!.position.pixels;
+      if (maxScroll - currentScroll <= _scrollThreshold) {
+        if (!isLoading) {
+          isLoading = true;
+          newsListNotifier.getAllNewsList();
+        }
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    controller?.removeListener(_scrollListener);
+    super.dispose();
+  }
+
   @override
   setupProviderListeners() {
     setupNewsProviderListener();
@@ -105,7 +132,13 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
 
   setupNewsProviderListener() {
     ref.listen<ViewState<List<News>>>(newsProvider, (previous, next) {
-      next.maybeWhen(orElse: () {}, serverError: (error) {});
+      next.maybeWhen(
+          orElse: () async {
+            await Future.delayed(const Duration(seconds: 2));
+            isLoading = false;
+          },
+          init: () {},
+          loading: () {});
     });
   }
 }

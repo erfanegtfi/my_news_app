@@ -1,20 +1,20 @@
 import 'enums/news_query.dart';
 
 class News {
-  String? title;
-  String? description;
-  String? urlToImage;
-  String? publishedAt;
-  String? content;
-  String? author;
-  Source? source;
-  NewsQuery? query;
+  final String? title;
+  final String? description;
+  final String? urlToImage;
+  final String? publishedAt;
+  final String? content;
+  final String? author;
+  final Source? source;
+  final NewsQuery? query;
 
   News({this.title, this.description, this.urlToImage, this.publishedAt, this.content, this.author, this.source, this.query});
 }
 
 class Source {
-  String? name;
+  final String? name;
 
   Source({this.name});
 }
