@@ -14,3 +14,11 @@ enum NewsQuery {
     );
   }
 }
+
+/// news order list
+List<NewsQuery> myNewsOrder = [
+  NewsQuery.microsoft,
+  NewsQuery.apple,
+  NewsQuery.google,
+  NewsQuery.tesla,
+];

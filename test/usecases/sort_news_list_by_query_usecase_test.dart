@@ -1,11 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:my_news_app/features/news/domain/entities/enums/news_query.dart';
-import 'package:my_news_app/features/news/domain/entities/news_model.dart';
+import 'package:my_news_app/features/news/domain/entities/news.dart';
 import 'package:my_news_app/features/news/domain/usecases/sort_news_list_by_query_usecase.dart';
 
 void main() {
   group('interleaveNewsByQueryOrder', () {
     SortNewsListByQueryUsecase sortNewsListByQueryUsecase = SortNewsListByQueryUsecase();
+    List<NewsQuery> myNewsOrder = [
+      NewsQuery.microsoft,
+      NewsQuery.apple,
+      NewsQuery.google,
+      NewsQuery.tesla,
+    ];
 
     test('should sort news in my order', () {
       final newsList = [
@@ -19,7 +25,7 @@ void main() {
         News(title: "T2", query: NewsQuery.tesla),
       ];
 
-      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList));
+      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList, myNewsOrder));
 
       expect(result[0].title, "M1");
       expect(result[1].title, "A1");
@@ -40,7 +46,7 @@ void main() {
         News(title: "G1", query: NewsQuery.google),
       ];
 
-      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList));
+      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList, myNewsOrder));
 
       expect(result[0].title, "M1");
       expect(result[1].title, "A1");
@@ -56,15 +62,26 @@ void main() {
         News(title: "A1", query: NewsQuery.apple),
       ];
 
-      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList));
+      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList, myNewsOrder));
 
       expect(result[0].title, "M1");
       expect(result[1].title, "A1");
       expect(result.length, 2);
     });
 
+    test('should handle empty order', () {
+      final newsList = [
+        News(title: "M1", query: NewsQuery.microsoft),
+        News(title: "A1", query: NewsQuery.apple),
+      ];
+
+      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList, []));
+
+      expect(result.length, 0);
+    });
+
     test('should handle empty list', () {
-      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam([]));
+      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam([], myNewsOrder));
       expect(result, isEmpty);
     });
 
@@ -74,7 +91,7 @@ void main() {
         News(title: "T1", query: NewsQuery.tesla),
       ];
 
-      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList));
+      final result = sortNewsListByQueryUsecase.call(NewsListSortByQueryParam(newsList, myNewsOrder));
 
       expect(result[0].title, "M1");
       expect(result[1].title, "T1");

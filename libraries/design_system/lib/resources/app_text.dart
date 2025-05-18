@@ -7,5 +7,7 @@ class AppText {
   static const String newsNotFound = "No news found!";
   static const String itemNotFound = "No item found!";
 
-  static const String newsScreenTitle = "Last news";
+  static const String newsScreenTitle = "Last News";
+  static const String newsContentScreenSource = "Source";
+  static const String newsContentScreenBy = "By";
 }

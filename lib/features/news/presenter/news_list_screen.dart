@@ -10,9 +10,12 @@ import 'package:design_system/resources/export_app_res.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_news_app/features/news/domain/entities/news_model.dart';
+import 'package:my_news_app/data/di/locator.dart';
+import 'package:my_news_app/features/news/domain/entities/news.dart';
 import 'package:app_widgets/utils_message.dart';
 import 'package:app_widgets/error_widget.dart';
+import 'package:my_news_app/features/news/presenter/news_content_screen.dart';
+import 'package:my_news_app/navigation/navigation_service.dart';
 
 import 'item_news_list.dart';
 import 'news_list_provider.dart';
@@ -39,12 +42,15 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       newsListNotifier.getAllNewsList();
     });
+    newsListNotifier.errorPublisher.listen((error) {
+      showToast(error.message);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     theme = Theme.of(context);
-    return body(context, appBar: AppBar(title: Text(AppText.newsScreenTitle)));
+    return body(context, appBar: AppBar(title: Text(AppText.newsScreenTitle, style: theme.textTheme.titleLarge)));
   }
 
   @override
@@ -63,9 +69,10 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
             return ListView.builder(
                 itemBuilder: (context, index) => NewsItem(
                       theme: theme,
-                      index: index,
                       news: news[index],
-                      onTap: () {},
+                      onTap: () {
+                        locator<NavigationService>().push(NewsContentScreen(news: news[index]));
+                      },
                       key: ValueKey(news[index].title),
                     ),
                 itemCount: news.length);
@@ -81,8 +88,8 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
   Widget getErrorWidget(GeneralError error) {
     return ListView(children: [
       SizedBox(height: 200.h),
-      if (error.appException is NetworkConnectionException) MyErrorWidget(image: AppAssets.iconWifi, message: error.message),
-      if (error.appException is! NetworkConnectionException) MyErrorWidget(image: AppAssets.iconPaper, message: error.message),
+      MyErrorWidget(
+          image: (error.appException is NetworkConnectionException) ? AppAssets.iconWifi : AppAssets.iconPaper, message: error.message),
     ]);
   }
 
@@ -98,15 +105,7 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
 
   setupNewsProviderListener() {
     ref.listen<ViewState<List<News>>>(newsProvider, (previous, next) {
-      next.maybeWhen(
-          orElse: () {},
-          serverError: (error) {
-            // if (error.appException is NetworkConnectionException) {
-            showToast(error.message);
-            // } else {
-            //   showToast(AppText.errorUnknown);
-            // }
-          });
+      next.maybeWhen(orElse: () {}, serverError: (error) {});
     });
   }
 }

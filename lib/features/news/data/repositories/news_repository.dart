@@ -8,7 +8,7 @@ import 'package:injectable/injectable.dart';
 import 'package:my_news_app/features/news/data/data_source/local/news_local_data_source.dart';
 import 'package:my_news_app/features/news/data/data_source/remote/news_remote_data_source.dart';
 import 'package:my_news_app/features/news/data/models/news_data_model.dart';
-import 'package:my_news_app/features/news/domain/entities/news_model.dart';
+import 'package:my_news_app/features/news/domain/entities/news.dart';
 import 'package:my_news_app/features/news/domain/repositories/news_repository.dart';
 import 'package:my_news_app/features/news/domain/usecases/news_list_as_stream_usecase.dart';
 import 'package:my_news_app/features/news/domain/usecases/news_list_usecase.dart';

@@ -28,12 +28,10 @@ final ThemeData lightTheme = ThemeData(
   iconTheme: IconThemeData(color: lightColors.icon, size: AppDimen.iconSize),
   brightness: Brightness.light,
   dividerTheme: DividerThemeData(color: lightColors.listDivider),
-  appBarTheme: AppBarTheme(backgroundColor: lightColors.appbarBackground, systemOverlayStyle: SystemUiOverlayStyle.dark),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-      style: ElevatedButton.styleFrom(
-    foregroundColor: Colors.white,
-    backgroundColor: lightColors.primary,
-  )),
+  appBarTheme: AppBarTheme(
+      backgroundColor: lightColors.appbarBackground,
+      iconTheme: IconThemeData(color: lightColors.icon),
+      systemOverlayStyle: SystemUiOverlayStyle.dark),
   textTheme: TextTheme(
     displayLarge: textDisplayLarge.copyWith(color: lightColors.textBlack),
     displayMedium: textDisplayMedium.copyWith(color: lightColors.textBlack),

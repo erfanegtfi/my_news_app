@@ -96,7 +96,7 @@ class _$NewsDatabase extends NewsDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `news` (`title` TEXT, `description` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT, `qu` TEXT, PRIMARY KEY (`title`))');
+            'CREATE TABLE IF NOT EXISTS `news` (`title` TEXT, `description` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT, `author` TEXT, `source` TEXT NOT NULL, `qu` TEXT, PRIMARY KEY (`title`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -124,6 +124,8 @@ class _$NewstDao extends NewstDao {
                   'urlToImage': item.urlToImage,
                   'publishedAt': item.publishedAt,
                   'content': item.content,
+                  'author': item.author,
+                  'source': _sourceConverter.encode(item.source),
                   'qu': item.query
                 },
             changeListener);
@@ -150,7 +152,7 @@ class _$NewstDao extends NewstDao {
         'SELECT * FROM news    WHERE qu IN (' +
             _sqliteVariablesForQueries +
             ')   AND publishedAt >= ?1 AND publishedAt <= ?2   ORDER BY publishedAt DESC',
-        mapper: (Map<String, Object?> row) => NewsDataModel(title: row['title'] as String?, description: row['description'] as String?, urlToImage: row['urlToImage'] as String?, publishedAt: row['publishedAt'] as String?, content: row['content'] as String?, query: row['qu'] as String?),
+        mapper: (Map<String, Object?> row) => NewsDataModel(title: row['title'] as String?, description: row['description'] as String?, urlToImage: row['urlToImage'] as String?, publishedAt: row['publishedAt'] as String?, content: row['content'] as String?, author: row['author'] as String?, source: _sourceConverter.decode(row['source'] as String), query: row['qu'] as String?),
         arguments: [fromDate, toDate, ...queries]);
   }
 
@@ -174,6 +176,8 @@ class _$NewstDao extends NewstDao {
             urlToImage: row['urlToImage'] as String?,
             publishedAt: row['publishedAt'] as String?,
             content: row['content'] as String?,
+            author: row['author'] as String?,
+            source: _sourceConverter.decode(row['source'] as String),
             query: row['qu'] as String?),
         arguments: [fromDate, toDate, ...queries],
         queryableName: 'news',
@@ -186,3 +190,6 @@ class _$NewstDao extends NewstDao {
         news, OnConflictStrategy.replace);
   }
 }
+
+// ignore_for_file: unused_element
+final _sourceConverter = SourceConverter();

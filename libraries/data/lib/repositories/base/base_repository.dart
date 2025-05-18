@@ -6,6 +6,7 @@ import 'package:data/remote/exception/network_connection_exception.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 
+/// a function to handle api calls and return responce or exception
 Future<DataResponse<T>> runService<T>({
   required Future<DataResponse<T>> Function() apiCall,
   DataResponse<T> Function(DioException error)? onDioError,
@@ -30,6 +31,7 @@ Future<DataResponse<T>> runService<T>({
   return dataResponse;
 }
 
+/// check user has network connection or not
 Future<bool> get isConnected async {
   List<ConnectivityResult> result = await Connectivity().checkConnectivity();
   return result.contains(ConnectivityResult.mobile) || result.contains(ConnectivityResult.wifi);

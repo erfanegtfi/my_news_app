@@ -1,16 +1,10 @@
 import 'package:injectable/injectable.dart';
 import 'package:my_news_app/features/news/domain/entities/enums/news_query.dart';
-import 'package:my_news_app/features/news/domain/entities/news_model.dart';
+import 'package:my_news_app/features/news/domain/entities/news.dart';
 
+/// sort given news list by your desire query order
 @injectable
 class SortNewsListByQueryUsecase {
-  List<NewsQuery> myOrder = [
-    NewsQuery.microsoft,
-    NewsQuery.apple,
-    NewsQuery.google,
-    NewsQuery.tesla,
-  ];
-
   SortNewsListByQueryUsecase();
 
   List<News> call(NewsListSortByQueryParam params) {
@@ -18,7 +12,7 @@ class SortNewsListByQueryUsecase {
     final List<News> reorderedNewsList = [];
     int index = 0;
 
-    for (var query in myOrder) newsGroups.putIfAbsent(query, () => []);
+    for (var query in params.myOrder) newsGroups.putIfAbsent(query, () => []);
 
     for (final news in params.news) {
       if (news.query != null) {
@@ -30,7 +24,7 @@ class SortNewsListByQueryUsecase {
 
     while (itemsRemaining) {
       itemsRemaining = false;
-      for (final query in myOrder) {
+      for (final query in params.myOrder) {
         final group = newsGroups[query];
         if (group != null && index < group.length) {
           reorderedNewsList.add(group[index]);
@@ -46,6 +40,6 @@ class SortNewsListByQueryUsecase {
 
 class NewsListSortByQueryParam {
   List<News> news;
-
-  NewsListSortByQueryParam(this.news);
+  List<NewsQuery> myOrder;
+  NewsListSortByQueryParam(this.news, this.myOrder);
 }
