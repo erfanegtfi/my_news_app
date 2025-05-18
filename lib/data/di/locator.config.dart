@@ -19,6 +19,7 @@ import '../../features/news/data/data_source/remote/news_rest_client.dart' as _i
 import '../../features/news/data/repositories/news_repository.dart' as _i1041;
 import '../../features/news/domain/repositories/news_repository.dart' as _i258;
 import '../../features/news/domain/usecases/news_list_as_stream_usecase.dart' as _i685;
+import '../../features/news/domain/usecases/sort_news_list_by_query_usecase.dart' as _i316;
 import '../../features/news/domain/usecases/news_list_usecase.dart' as _i236;
 import '../../navigation/navigation_service.dart' as _i568;
 import '../local_db/database.dart' as _i49;
@@ -45,6 +46,7 @@ Future<_i174.GetIt> init(
     () => registerDataModule.basetUrl,
     instanceName: 'baseUrl',
   );
+  gh.factory<_i316.SortNewsListByQueryUsecase>(() => _i316.SortNewsListByQueryUsecase());
   gh.lazySingleton<_i568.NavigationService>(() => registerDataModule.navigationService);
   gh.lazySingleton<_i698.ImageLoader>(
     () => registerDataModule.networkImageLoader,

@@ -18,7 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ViewState<T> {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool? userLoggedIn) init,
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(T value) success,
     required TResult Function(GeneralError error) serverError,
@@ -26,7 +26,7 @@ mixin _$ViewState<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool? userLoggedIn)? init,
+    TResult? Function()? init,
     TResult? Function()? loading,
     TResult? Function(T value)? success,
     TResult? Function(GeneralError error)? serverError,
@@ -34,7 +34,7 @@ mixin _$ViewState<T> {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool? userLoggedIn)? init,
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(T value)? success,
     TResult Function(GeneralError error)? serverError,
@@ -94,8 +94,6 @@ abstract class _$$InitImplCopyWith<T, $Res> {
   factory _$$InitImplCopyWith(
           _$InitImpl<T> value, $Res Function(_$InitImpl<T>) then) =
       __$$InitImplCopyWithImpl<T, $Res>;
-  @useResult
-  $Res call({bool? userLoggedIn});
 }
 
 /// @nodoc
@@ -108,86 +106,60 @@ class __$$InitImplCopyWithImpl<T, $Res>
 
   /// Create a copy of ViewState
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? userLoggedIn = freezed,
-  }) {
-    return _then(_$InitImpl<T>(
-      userLoggedIn: freezed == userLoggedIn
-          ? _value.userLoggedIn
-          : userLoggedIn // ignore: cast_nullable_to_non_nullable
-              as bool?,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$InitImpl<T> implements Init<T> {
-  const _$InitImpl({this.userLoggedIn});
-
-  @override
-  final bool? userLoggedIn;
+  const _$InitImpl();
 
   @override
   String toString() {
-    return 'ViewState<$T>.init(userLoggedIn: $userLoggedIn)';
+    return 'ViewState<$T>.init()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$InitImpl<T> &&
-            (identical(other.userLoggedIn, userLoggedIn) ||
-                other.userLoggedIn == userLoggedIn));
+        (other.runtimeType == runtimeType && other is _$InitImpl<T>);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, userLoggedIn);
-
-  /// Create a copy of ViewState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$InitImplCopyWith<T, _$InitImpl<T>> get copyWith =>
-      __$$InitImplCopyWithImpl<T, _$InitImpl<T>>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool? userLoggedIn) init,
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(T value) success,
     required TResult Function(GeneralError error) serverError,
   }) {
-    return init(userLoggedIn);
+    return init();
   }
 
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool? userLoggedIn)? init,
+    TResult? Function()? init,
     TResult? Function()? loading,
     TResult? Function(T value)? success,
     TResult? Function(GeneralError error)? serverError,
   }) {
-    return init?.call(userLoggedIn);
+    return init?.call();
   }
 
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool? userLoggedIn)? init,
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(T value)? success,
     TResult Function(GeneralError error)? serverError,
     required TResult orElse(),
   }) {
     if (init != null) {
-      return init(userLoggedIn);
+      return init();
     }
     return orElse();
   }
@@ -231,15 +203,7 @@ class _$InitImpl<T> implements Init<T> {
 }
 
 abstract class Init<T> implements ViewState<T> {
-  const factory Init({final bool? userLoggedIn}) = _$InitImpl<T>;
-
-  bool? get userLoggedIn;
-
-  /// Create a copy of ViewState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$InitImplCopyWith<T, _$InitImpl<T>> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory Init() = _$InitImpl<T>;
 }
 
 /// @nodoc
@@ -283,7 +247,7 @@ class _$LoadingImpl<T> implements Loading<T> {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool? userLoggedIn) init,
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(T value) success,
     required TResult Function(GeneralError error) serverError,
@@ -294,7 +258,7 @@ class _$LoadingImpl<T> implements Loading<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool? userLoggedIn)? init,
+    TResult? Function()? init,
     TResult? Function()? loading,
     TResult? Function(T value)? success,
     TResult? Function(GeneralError error)? serverError,
@@ -305,7 +269,7 @@ class _$LoadingImpl<T> implements Loading<T> {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool? userLoggedIn)? init,
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(T value)? success,
     TResult Function(GeneralError error)? serverError,
@@ -428,7 +392,7 @@ class _$SuccessImpl<T> implements Success<T> {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool? userLoggedIn) init,
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(T value) success,
     required TResult Function(GeneralError error) serverError,
@@ -439,7 +403,7 @@ class _$SuccessImpl<T> implements Success<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool? userLoggedIn)? init,
+    TResult? Function()? init,
     TResult? Function()? loading,
     TResult? Function(T value)? success,
     TResult? Function(GeneralError error)? serverError,
@@ -450,7 +414,7 @@ class _$SuccessImpl<T> implements Success<T> {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool? userLoggedIn)? init,
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(T value)? success,
     TResult Function(GeneralError error)? serverError,
@@ -581,7 +545,7 @@ class _$ServerErrorImpl<T> implements ServerError<T> {
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(bool? userLoggedIn) init,
+    required TResult Function() init,
     required TResult Function() loading,
     required TResult Function(T value) success,
     required TResult Function(GeneralError error) serverError,
@@ -592,7 +556,7 @@ class _$ServerErrorImpl<T> implements ServerError<T> {
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(bool? userLoggedIn)? init,
+    TResult? Function()? init,
     TResult? Function()? loading,
     TResult? Function(T value)? success,
     TResult? Function(GeneralError error)? serverError,
@@ -603,7 +567,7 @@ class _$ServerErrorImpl<T> implements ServerError<T> {
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(bool? userLoggedIn)? init,
+    TResult Function()? init,
     TResult Function()? loading,
     TResult Function(T value)? success,
     TResult Function(GeneralError error)? serverError,

@@ -49,23 +49,6 @@ class NewsRepositoryImpl implements NewsRepository {
       },
     );
 
-    // try {
-    //   ListResponse<NewsDataModel> response = await newsRemoteDataSource.getAllNews(params);
-    //   if (response.articles != null && response.articles?.isNotEmpty == true) {
-    //     dataResponse = DataResponse.success(response.articles!.map((news) {
-    //       news.query = params.query;
-    //       return news.toEntity();
-    //     }).toList());
-    //     newsLocalDataSource.insertNews(response.articles!);
-    //   } else {
-    //     dataResponse = DataResponse.success(List.empty());
-    //   }
-    // } on DioException catch (error) {
-    //   dataResponse = DataResponse.error(GeneralError.withDioError(error));
-    // } catch (error) {
-    //   dataResponse = DataResponse.error(GeneralError.withMessage(AppText.errorUnknown));
-    // }
-
     return dataResponse;
   }
 

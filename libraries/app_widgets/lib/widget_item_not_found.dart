@@ -3,7 +3,7 @@ import 'package:design_system/resources/export_app_res.dart';
 import 'package:flutter/material.dart';
 
 class ItemNotFoundWidget extends StatelessWidget {
-  final Widget? image;
+  final String? image;
   final String? message;
   const ItemNotFoundWidget({super.key, this.image, this.message});
 
@@ -15,7 +15,7 @@ class ItemNotFoundWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: AppDimen.verticalSpacing),
-          image ?? Image.asset(AppAssets.iconPaper, height: 40, width: 40, package: "design_system"),
+          Image.asset(image ?? AppAssets.iconPaper, height: 40, width: 40, package: "design_system"),
           SizedBox(height: AppDimen.spacingNormal),
           Text(message ?? AppText.itemNotFound, style: Theme.of(context).textTheme.bodyMedium),
           SizedBox(height: AppDimen.verticalSpacing),

@@ -4,12 +4,15 @@ import 'package:app_utils/view_state.dart';
 import 'package:app_widgets/base/base_screen.dart';
 import 'package:app_widgets/widget_item_not_found.dart';
 import 'package:data/remote/exception/network_connection_exception.dart';
+import 'package:data/remote/exception/server_error.dart';
+import 'package:design_system/resources/app_assets.dart';
 import 'package:design_system/resources/export_app_res.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_news_app/features/news/domain/entities/news_model.dart';
 import 'package:app_widgets/utils_message.dart';
+import 'package:app_widgets/error_widget.dart';
 
 import 'item_news_list.dart';
 import 'news_list_provider.dart';
@@ -52,7 +55,8 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
   Widget newsListView() {
     return Consumer(builder: (context, ref, __) {
       final reqult = ref.watch(newsProvider);
-      return reqult.maybeWhen(
+      return reqult.when(
+        init: () => SizedBox(),
         loading: () => Center(child: CircularProgressIndicator()),
         success: (news) {
           if (news.isNotEmpty) {
@@ -62,22 +66,28 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
                       index: index,
                       news: news[index],
                       onTap: () {},
+                      key: ValueKey(news[index].title),
                     ),
                 itemCount: news.length);
           } else {
             return ListView(children: [SizedBox(height: 200.h), const ItemNotFoundWidget(message: AppText.newsNotFound)]);
           }
         },
-        serverError: (error) {
-          return ListView(children: [SizedBox(height: 200.h), const ItemNotFoundWidget(message: AppText.errorUnknown)]);
-        },
-        orElse: () => ItemNotFoundWidget(message: AppText.errorUnknown),
+        serverError: (error) => getErrorWidget(error),
       );
     });
   }
 
+  Widget getErrorWidget(GeneralError error) {
+    return ListView(children: [
+      SizedBox(height: 200.h),
+      if (error.appException is NetworkConnectionException) MyErrorWidget(image: AppAssets.iconWifi, message: error.message),
+      if (error.appException is! NetworkConnectionException) MyErrorWidget(image: AppAssets.iconPaper, message: error.message),
+    ]);
+  }
+
   Future<void> _refresh() {
-    ref.read(newsProvider.notifier).getAllNewsList(resetPage: true);
+    newsListNotifier.getAllNewsList(resetPage: true);
     return Future.delayed(Duration(milliseconds: 2));
   }
 
@@ -91,11 +101,11 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
       next.maybeWhen(
           orElse: () {},
           serverError: (error) {
-            if (error is NetworkConnectionException) {
-              showToast(AppText.errorNetworkConnection);
-            } else {
-              showToast(AppText.errorUnknown);
-            }
+            // if (error.appException is NetworkConnectionException) {
+            showToast(error.message);
+            // } else {
+            //   showToast(AppText.errorUnknown);
+            // }
           });
     });
   }
