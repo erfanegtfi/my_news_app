@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app_utils/constants.dart';
 import 'package:app_utils/utils.dart';
 import 'package:data/model/index_app_response.dart';
@@ -30,6 +32,7 @@ class NewsProviderNotifier extends StateNotifier<ViewState<List<News>>> {
   int page = 1;
   late final String _fromDate;
   late final String _toDate;
+  StreamSubscription<List<News>?>? sub;
 
   NewsProviderNotifier(
     this.newsListAsStreamUsecase,
@@ -42,7 +45,7 @@ class NewsProviderNotifier extends StateNotifier<ViewState<List<News>>> {
 
     NewsOfflineParam param =
         NewsOfflineParam(NewsQuery.values.map((e) => e.apiQuery).toList(), _fromDate, _toDate, SortBy.publishedAt.title);
-    newsListAsStreamUsecase.call(param).listen(
+    sub = newsListAsStreamUsecase.call(param).listen(
       (event) {
         if (event != null) {
           allNews.clear();
@@ -89,6 +92,7 @@ class NewsProviderNotifier extends StateNotifier<ViewState<List<News>>> {
   @override
   void dispose() {
     errorPublisher.close();
+    sub?.cancel();
     super.dispose();
   }
 }

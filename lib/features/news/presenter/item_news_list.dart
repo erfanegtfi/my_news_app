@@ -32,7 +32,7 @@ class NewsItem extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    loadAssetImage(news.urlToImage, width: 100.w, height: 70.h),
+                    loadAssetImage(news.urlToImage, width: 105, height: 75),
                     SizedBox(width: AppDimen.spacingLarge),
                     Expanded(
                         child:

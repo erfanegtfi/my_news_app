@@ -38,7 +38,7 @@ class NewsContentScreenState extends BaseScreenState<NewsContentScreen> {
   Widget getScreenBody() {
     return ListView(
       children: [
-        AspectRatio(aspectRatio: 2, child: loadAssetImage(widget.news.urlToImage, height: 500, width: 800)),
+        AspectRatio(aspectRatio: 1.9, child: loadAssetImage(widget.news.urlToImage, height: 500, width: 800)),
         SizedBox(height: AppDimen.spacingLarge),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppDimen.horizontalSpacing),
