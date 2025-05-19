@@ -1,6 +1,7 @@
 import 'package:data/remote/configs/check_api_key_interceptor.dart';
 import 'package:dio/dio.dart';
 
+/// initial and config dio
 class AppDio {
   late final Dio _dio;
 

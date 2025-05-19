@@ -1,6 +1,7 @@
 import 'package:data/remote/api_end_points.dart';
 import 'package:dio/dio.dart';
 
+/// append apiKey to the end of urls as a query param
 class CheckApiKeyInterceptor extends Interceptor {
   CheckApiKeyInterceptor();
 

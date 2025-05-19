@@ -1,3 +1,5 @@
+/// base response is a common fields that all apis have
+/// status, totalResults, message and code
 class BaseResponse {
   String? status;
   int? totalResults;

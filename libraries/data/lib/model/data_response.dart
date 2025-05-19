@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'data_response.freezed.dart';
 
+/// server api calls have two states: success or error
 @freezed
 abstract class DataResponse<T> with _$DataResponse<T> {
   const factory DataResponse.success(T res) = Success<T>;

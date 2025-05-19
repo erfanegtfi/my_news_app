@@ -16,6 +16,7 @@ import 'package:app_widgets/utils_message.dart';
 import 'package:app_widgets/error_widget.dart';
 import 'package:my_news_app/features/news/presenter/news_content_screen.dart';
 import 'package:my_news_app/navigation/navigation_service.dart';
+import 'package:rxdart/rxdart.dart';
 
 import 'item_news_list.dart';
 import 'providers/news_list_provider.dart';
@@ -47,7 +48,7 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       newsListNotifier.getAllNewsList();
     });
-    newsListNotifier.errorPublisher.listen((error) {
+    newsListNotifier.errorPublisher.distinct().debounceTime(Duration(seconds: 2)).listen((error) {
       showToast(error.message);
     });
   }
@@ -76,7 +77,6 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
                 itemBuilder: (context, index) => NewsItem(
                       theme: theme,
                       news: news[index],
-                      index: index,
                       onTap: () {
                         locator<NavigationService>().push(NewsContentScreen(news: news[index]));
                       },

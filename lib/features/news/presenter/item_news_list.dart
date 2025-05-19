@@ -10,10 +10,9 @@ import 'widget/tag_widget.dart';
 class NewsItem extends StatelessWidget {
   final ThemeData theme;
   final News news;
-  final int index;
   final Function onTap;
 
-  const NewsItem({required this.theme, required this.news, required this.index, required this.onTap, super.key});
+  const NewsItem({required this.theme, required this.news, required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,6 @@ class NewsItem extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(index.toString()),
                 Text(news.title ?? "",
                     style: theme.textTheme.titleMedium, textAlign: TextAlign.left, maxLines: 2, overflow: TextOverflow.ellipsis),
                 SizedBox(height: AppDimen.spacingSmall),
