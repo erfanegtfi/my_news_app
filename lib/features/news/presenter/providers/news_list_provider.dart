@@ -2,97 +2,118 @@ import 'dart:async';
 
 import 'package:app_utils/constants.dart';
 import 'package:app_utils/utils.dart';
-import 'package:data/model/index_app_response.dart';
 import 'package:app_utils/view_state.dart';
 import 'package:data/remote/exception/server_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_news_app/data/di/locator.dart';
 import 'package:my_news_app/features/news/domain/entities/enums/news_query.dart';
 import 'package:my_news_app/features/news/domain/entities/enums/sort_by.dart';
 import 'package:my_news_app/features/news/domain/entities/news.dart';
 import 'package:my_news_app/features/news/domain/usecases/news_list_as_stream_usecase.dart';
-import 'package:my_news_app/features/news/domain/usecases/sort_news_list_by_query_usecase.dart';
 import 'package:my_news_app/features/news/domain/usecases/news_list_usecase.dart';
-import 'package:my_news_app/data/di/locator.dart';
+import 'package:my_news_app/features/news/domain/usecases/sort_news_list_by_query_usecase.dart';
 import 'package:rxdart/rxdart.dart';
 
 final newsProvider = StateNotifierProvider.autoDispose<NewsProviderNotifier, ViewState<List<News>>>((ref) {
-  return NewsProviderNotifier(locator<NewsListAsStreamUsecase>(), locator<NewsListUsecase>(), locator<SortNewsListByQueryUsecase>(), ref);
+  return NewsProviderNotifier(
+    locator<NewsListAsStreamUsecase>(),
+    locator<NewsListUsecase>(),
+    locator<SortNewsListByQueryUsecase>(),
+    ref,
+  );
 });
 
 class NewsProviderNotifier extends StateNotifier<ViewState<List<News>>> {
-  final PublishSubject<GeneralError> errorPublisher = PublishSubject();
-
+  final Ref ref;
   final NewsListAsStreamUsecase newsListAsStreamUsecase;
   final NewsListUsecase newsListUsecase;
-  final SortNewsListByQueryUsecase newsListSortByQueryUsecase;
+  final SortNewsListByQueryUsecase sortNewsUsecase;
 
-  final Ref ref;
-  List<News> allNews = [];
-  int page = 1;
+  final PublishSubject<GeneralError> errorPublisher = PublishSubject();
+
   late final String _fromDate;
   late final String _toDate;
-  StreamSubscription<List<News>?>? sub;
+
+  List<News> allNews = [];
+  int _currentPage = 1;
+  StreamSubscription<List<News>?>? _subscription;
 
   NewsProviderNotifier(
     this.newsListAsStreamUsecase,
     this.newsListUsecase,
-    this.newsListSortByQueryUsecase,
+    this.sortNewsUsecase,
     this.ref,
   ) : super(ViewState.init()) {
     _fromDate = Utils.getPassedDate(2);
     _toDate = Utils.getCurrentDate();
 
-    NewsOfflineParam param =
-        NewsOfflineParam(NewsQuery.values.map((e) => e.apiQuery).toList(), _fromDate, _toDate, SortBy.publishedAt.title);
-    sub = newsListAsStreamUsecase.call(param).listen(
-      (event) {
-        if (event != null) {
-          allNews.clear();
-          allNews.addAll(event);
-        }
-        if (allNews.isNotEmpty == true) _setSuccessState();
-        debugPrint("${event?.length}");
-      },
+    _subscribeToOfflineNews();
+  }
+
+  void _subscribeToOfflineNews() {
+    final offlineParam = NewsOfflineParam(
+      NewsQuery.values.map((e) => e.apiQuery).toList(),
+      _fromDate,
+      _toDate,
+      SortBy.publishedAt.title,
     );
+
+    _subscription = newsListAsStreamUsecase(offlineParam).listen((event) {
+      if (event != null && event.isNotEmpty) {
+        allNews = List<News>.from(event);
+        _updateSuccessState();
+      }
+      debugPrint("Offline news loaded: ${event?.length ?? 0}");
+    });
   }
 
   void getAllNewsList({bool resetPage = false}) {
-    if (resetPage) {
-      page = 1;
-    }
-    if (page == 1) state = ViewState.loading();
+    if (resetPage) _currentPage = 1;
+
+    if (_currentPage == 1) state = ViewState.loading();
 
     for (var query in NewsQuery.values) {
-      _callApi(NewsParam(query.apiQuery, _fromDate, _toDate, SortBy.publishedAt.title, page, Constants.LIST_PAGE_SIZE));
+      final params = NewsParam(
+        query.apiQuery,
+        _fromDate,
+        _toDate,
+        SortBy.publishedAt.title,
+        _currentPage,
+        Constants.LIST_PAGE_SIZE,
+      );
+      _fetchNews(params);
     }
-    page++;
+
+    _currentPage++;
   }
 
-  void _callApi(NewsParam params) async {
-    DataResponse<List<News>?> request = await newsListUsecase(params);
-    request.when(
-      success: (news) {
-        if (state is Loading) _setSuccessState();
-      },
+  Future<void> _fetchNews(NewsParam params) async {
+    final result = await newsListUsecase(params);
+    result.when(
+      success: (_) {},
       error: (error) {
-        errorPublisher.sink.add(error);
-        if (allNews.isNotEmpty == true)
-          _setSuccessState();
-        else
+        if (allNews.isNotEmpty) {
+          errorPublisher.add(error);
+          _updateSuccessState();
+        } else {
           state = ViewState.serverError(error);
+        }
       },
     );
   }
 
-  _setSuccessState() {
-    state = ViewState.success(newsListSortByQueryUsecase.call(NewsListSortByQueryParam(allNews, myNewsOrder)));
+  void _updateSuccessState() {
+    final sortedNews = sortNewsUsecase(
+      NewsListSortByQueryParam(allNews, myNewsOrder),
+    );
+    state = ViewState.success(sortedNews);
   }
 
   @override
   void dispose() {
+    _subscription?.cancel();
     errorPublisher.close();
-    sub?.cancel();
     super.dispose();
   }
 }
