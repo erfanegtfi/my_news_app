@@ -24,11 +24,6 @@ class NewsContentScreenState extends BaseScreenState<NewsContentScreen> {
   NewsContentScreenState();
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     theme = Theme.of(context);
     return body(context, appBar: AppBar(title: Text(widget.news.title ?? "", style: theme.textTheme.titleLarge, maxLines: 1)));

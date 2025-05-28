@@ -71,6 +71,7 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
         init: () => SizedBox(),
         loading: () => Center(child: CircularProgressIndicator()),
         success: (news) {
+          isLoading = false;
           if (news.isNotEmpty) {
             return ListView.builder(
                 controller: controller,
@@ -134,8 +135,7 @@ class NewsListScreenState extends BaseScreenState<NewsListScreen> {
     ref.listen<ViewState<List<News>>>(newsProvider, (previous, next) {
       next.maybeWhen(
           orElse: () async {
-            await Future.delayed(const Duration(seconds: 2));
-            isLoading = false;
+            // await Future.delayed(const Duration(seconds: 2));
           },
           init: () {},
           loading: () {});
