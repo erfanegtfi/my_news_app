@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_news_app/app/app.dart';
 
-import '../data/di/locator.dart';
+import '../di/locator.dart';
 
 appStarter() {
   runZonedGuarded(() async {

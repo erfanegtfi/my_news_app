@@ -6,7 +6,7 @@ import 'package:app_utils/view_state.dart';
 import 'package:data/remote/exception/server_error.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:my_news_app/data/di/locator.dart';
+import 'package:my_news_app/di/locator.dart';
 import 'package:my_news_app/features/news/domain/entities/enums/news_query.dart';
 import 'package:my_news_app/features/news/domain/entities/enums/sort_by.dart';
 import 'package:my_news_app/features/news/domain/entities/news.dart';

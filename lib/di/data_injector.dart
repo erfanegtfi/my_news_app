@@ -4,7 +4,7 @@ import 'package:app_widgets/image/network_image_loader.dart';
 import 'package:data/remote/api_end_points.dart';
 import 'package:data/remote/configs/dio_configuration.dart';
 import 'package:injectable/injectable.dart';
-import 'package:my_news_app/data/local_db/database.dart';
+import 'package:my_news_app/database/database.dart';
 import 'package:my_news_app/navigation/navigation_service.dart';
 import 'package:dio/dio.dart';
 

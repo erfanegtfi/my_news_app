@@ -1,6 +1,6 @@
 import 'package:app_widgets/image/image_loader.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:my_news_app/data/di/locator.dart';
+import 'package:my_news_app/di/locator.dart';
 
 /// factory class to load images based on url
 /// if asset was empty, it would load empty place holder
