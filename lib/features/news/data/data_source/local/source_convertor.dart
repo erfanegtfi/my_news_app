@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:floor/floor.dart';
+import 'package:froom/froom.dart';
 import 'package:my_news_app/features/news/data/models/news_data_model.dart';
 
 class SourceConverter extends TypeConverter<SourceDataModel, String> {

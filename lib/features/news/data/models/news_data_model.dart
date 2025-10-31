@@ -1,4 +1,4 @@
-import 'package:floor/floor.dart';
+import 'package:froom/froom.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:my_news_app/features/news/domain/entities/enums/news_query.dart';
 import 'package:my_news_app/features/news/domain/entities/news.dart';
