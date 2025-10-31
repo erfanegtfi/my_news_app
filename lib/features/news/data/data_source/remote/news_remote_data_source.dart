@@ -1,7 +1,7 @@
 import 'package:data/model/index_app_response.dart';
 import 'package:injectable/injectable.dart';
 import 'package:my_news_app/features/news/data/models/news_data_model.dart';
-import 'package:my_news_app/features/news/domain/usecases/news_list_usecase.dart';
+import 'package:my_news_app/features/news/domain/usecases/params/news_params.dart';
 
 import 'news_rest_client.dart';
 

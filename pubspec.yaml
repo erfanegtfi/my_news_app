@@ -26,7 +26,7 @@ dependencies:
   rxdart: ^0.28.0
   froom: ^4.0.0
   json_annotation: ^4.9.0
-  flutter_riverpod: ^2.6.1
+  flutter_bloc: ^9.1.1
   injectable: ^2.5.0
 
 

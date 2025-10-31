@@ -6,7 +6,8 @@ part of 'news_data_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-NewsDataModel _$NewsDataModelFromJson(Map<String, dynamic> json) => NewsDataModel(
+NewsDataModel _$NewsDataModelFromJson(Map<String, dynamic> json) =>
+    NewsDataModel(
       title: json['title'] as String?,
       description: json['description'] as String?,
       urlToImage: json['urlToImage'] as String?,
@@ -16,7 +17,8 @@ NewsDataModel _$NewsDataModelFromJson(Map<String, dynamic> json) => NewsDataMode
       source: SourceDataModel.fromJson(json['source'] as Map<String, dynamic>),
     );
 
-Map<String, dynamic> _$NewsDataModelToJson(NewsDataModel instance) => <String, dynamic>{
+Map<String, dynamic> _$NewsDataModelToJson(NewsDataModel instance) =>
+    <String, dynamic>{
       'title': instance.title,
       'description': instance.description,
       'urlToImage': instance.urlToImage,
@@ -26,10 +28,12 @@ Map<String, dynamic> _$NewsDataModelToJson(NewsDataModel instance) => <String, d
       'source': instance.source,
     };
 
-SourceDataModel _$SourceDataModelFromJson(Map<String, dynamic> json) => SourceDataModel(
+SourceDataModel _$SourceDataModelFromJson(Map<String, dynamic> json) =>
+    SourceDataModel(
       name: json['name'] as String?,
     );
 
-Map<String, dynamic> _$SourceDataModelToJson(SourceDataModel instance) => <String, dynamic>{
+Map<String, dynamic> _$SourceDataModelToJson(SourceDataModel instance) =>
+    <String, dynamic>{
       'name': instance.name,
     };

@@ -1,7 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:my_news_app/database/database.dart';
 import 'package:my_news_app/features/news/data/models/news_data_model.dart';
-import 'package:my_news_app/features/news/domain/usecases/news_list_as_stream_usecase.dart';
+import 'package:my_news_app/features/news/domain/usecases/params/news_offline_param.dart';
 
 abstract class NewsLocalDataSource {
   Stream<List<NewsDataModel>> getAllNewsAsStream(NewsOfflineParam params);

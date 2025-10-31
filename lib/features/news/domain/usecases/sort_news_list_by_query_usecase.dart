@@ -1,6 +1,7 @@
 import 'package:injectable/injectable.dart';
 import 'package:my_news_app/features/news/domain/entities/enums/news_query.dart';
 import 'package:my_news_app/features/news/domain/entities/news.dart';
+import 'package:my_news_app/features/news/domain/usecases/params/news_list_sort_by_query_param.dart';
 
 /// sort given news list by your desire query order
 @injectable
@@ -36,10 +37,4 @@ class SortNewsListByQueryUsecase {
 
     return reorderedNewsList;
   }
-}
-
-class NewsListSortByQueryParam {
-  List<News> news;
-  List<NewsQuery> myOrder;
-  NewsListSortByQueryParam(this.news, this.myOrder);
 }

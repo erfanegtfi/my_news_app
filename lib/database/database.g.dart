@@ -3,7 +3,7 @@
 part of 'database.dart';
 
 // **************************************************************************
-// FloorGenerator
+// FroomGenerator
 // **************************************************************************
 
 abstract class $NewsDatabaseBuilderContract {
@@ -18,7 +18,7 @@ abstract class $NewsDatabaseBuilderContract {
 }
 
 // ignore: avoid_classes_with_only_static_members
-class $FloorNewsDatabase {
+class $FroomNewsDatabase {
   /// Creates a database builder for a persistent database.
   /// Once a database is built, you should keep a reference to it and re-use it.
   static $NewsDatabaseBuilderContract databaseBuilder(String name) =>

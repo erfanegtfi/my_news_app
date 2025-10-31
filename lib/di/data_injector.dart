@@ -25,9 +25,6 @@ abstract class RegisterDataModule {
   @lazySingleton
   ImageLoader get assetEmptyImageLoader => AssetEmptyImageLoader();
 
-  // @Injectable(as: ConnectionManager, order: -1)
-  // ConnectionManagerImpl get connectionManager;
-
   @LazySingleton(order: -3)
   Dio get dio {
     return AppDio().getDio();
@@ -36,7 +33,7 @@ abstract class RegisterDataModule {
   @preResolve
   @LazySingleton(order: -3)
   Future<NewsDatabase> initDatabase() async {
-    final database = await $FloorNewsDatabase.databaseBuilder('news_database.db').addMigrations([]).build();
+    final database = await $FroomNewsDatabase.databaseBuilder('news_database.db').addMigrations([]).build();
 
     return database;
   }

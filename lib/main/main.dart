@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_news_app/app/app.dart';
 
 import '../di/locator.dart';
@@ -12,9 +11,7 @@ appStarter() {
     await configureDependencies();
     await locator.allReady();
 
-    runApp(
-      ProviderScope(child: MyApp(), observers: []),
-    );
+    runApp(MyApp());
   }, (exception, stackTrace) async {
     debugPrint(exception.toString());
   });

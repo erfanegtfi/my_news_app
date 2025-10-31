@@ -16,43 +16,36 @@ class NewsItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        InkWell(
-          onTap: () => onTap(),
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppDimen.horizontalSpacing, vertical: AppDimen.spacingNormal),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return InkWell(
+      onTap: () => onTap(),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppDimen.horizontalSpacing, vertical: AppDimen.spacingNormal),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(news.title ?? "",
+                style: theme.textTheme.titleMedium, textAlign: TextAlign.left, maxLines: 2, overflow: TextOverflow.ellipsis),
+            SizedBox(height: AppDimen.spacingSmall),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(news.title ?? "",
-                    style: theme.textTheme.titleMedium, textAlign: TextAlign.left, maxLines: 2, overflow: TextOverflow.ellipsis),
-                SizedBox(height: AppDimen.spacingSmall),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    loadAssetImage(news.urlToImage, width: 105, height: 75),
-                    SizedBox(width: AppDimen.spacingLarge),
-                    Expanded(
-                        child:
-                            Text(news.description ?? "", style: theme.textTheme.bodyMedium, maxLines: 3, overflow: TextOverflow.ellipsis)),
-                  ],
-                ),
-                SizedBox(height: AppDimen.spacingSmall),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(Utils.formatDate(news.publishedAt), style: theme.textTheme.bodySmall),
-                    QueryTagWidget(gueryTag: news.query),
-                  ],
-                )
+                loadAssetImage(news.urlToImage, width: 105, height: 75),
+                SizedBox(width: AppDimen.spacingLarge),
+                Expanded(
+                    child: Text(news.description ?? "", style: theme.textTheme.bodyMedium, maxLines: 3, overflow: TextOverflow.ellipsis)),
               ],
             ),
-          ),
+            SizedBox(height: AppDimen.spacingSmall),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(Utils.formatDate(news.publishedAt), style: theme.textTheme.bodySmall),
+                QueryTagWidget(gueryTag: news.query),
+              ],
+            )
+          ],
         ),
-        Divider(),
-      ],
+      ),
     );
   }
 }
