@@ -5,7 +5,7 @@ import 'package:my_news_app/features/news/domain/usecases/params/news_params.dar
 
 abstract class NewsRepository {
   Stream<List<News>> getAllNewsAsStream(NewsOfflineParam params);
-  Future<List<News>?> getAllNewsLocal(NewsOfflineParam params);
+  Future<List<News>?> getAllNewsLocal(NewsParam params);
 
   Future<DataResponse<List<News>?>> getAllNewsRemote(NewsParam params);
 }

@@ -48,7 +48,7 @@ class NewsRepositoryImpl implements NewsRepository {
   }
 
   @override
-  Future<List<News>?> getAllNewsLocal(NewsOfflineParam params) async {
+  Future<List<News>?> getAllNewsLocal(NewsParam params) async {
     List<NewsDataModel> response = await newsLocalDataSource.getAllNews(params);
     return response.map((news) => news.toEntity()).toList();
   }

@@ -26,6 +26,8 @@ import '../features/news/domain/repositories/news_repository.dart' as _i828;
 import '../features/news/domain/usecases/news_list_as_stream_usecase.dart'
     as _i929;
 import '../features/news/domain/usecases/news_list_usecase.dart' as _i222;
+import '../features/news/domain/usecases/remove_duplicate_news_usecase.dart'
+    as _i1047;
 import '../features/news/domain/usecases/sort_news_list_by_query_usecase.dart'
     as _i989;
 import '../features/news/presenter/providers/news_list_provider.dart' as _i78;
@@ -53,6 +55,8 @@ Future<_i174.GetIt> init(
     () => registerDataModule.basetUrl,
     instanceName: 'baseUrl',
   );
+  gh.factory<_i1047.RemoveDuplicateNewsUsecase>(
+      () => _i1047.RemoveDuplicateNewsUsecase());
   gh.factory<_i989.SortNewsListByQueryUsecase>(
       () => _i989.SortNewsListByQueryUsecase());
   gh.lazySingleton<_i17.NavigationService>(
@@ -85,6 +89,7 @@ Future<_i174.GetIt> init(
         newsListAsStreamUsecase: gh<_i929.NewsListAsStreamUsecase>(),
         newsListUsecase: gh<_i222.NewsListUsecase>(),
         sortNewsUsecase: gh<_i989.SortNewsListByQueryUsecase>(),
+        removeDuplicateNewsUsecase: gh<_i1047.RemoveDuplicateNewsUsecase>(),
       ));
   return getIt;
 }

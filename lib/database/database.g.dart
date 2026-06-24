@@ -140,20 +140,16 @@ class _$NewstDao extends NewstDao {
 
   @override
   Future<List<NewsDataModel>> getAllNews(
-    List<String> queries,
+    String query,
     String fromDate,
     String toDate,
+    int page,
+    int pageSize,
   ) async {
-    const offset = 3;
-    final _sqliteVariablesForQueries =
-        Iterable<String>.generate(queries.length, (i) => '?${i + offset}')
-            .join(',');
     return _queryAdapter.queryList(
-        'SELECT * FROM news    WHERE qu IN (' +
-            _sqliteVariablesForQueries +
-            ')   AND publishedAt >= ?1 AND publishedAt <= ?2   ORDER BY publishedAt DESC',
+        'SELECT * FROM news    WHERE  qu = ?1   AND publishedAt >= ?2 AND publishedAt <= ?3   ORDER BY publishedAt DESC    LIMIT ?5 OFFSET (?4 - 1) * ?5',
         mapper: (Map<String, Object?> row) => NewsDataModel(title: row['title'] as String?, description: row['description'] as String?, urlToImage: row['urlToImage'] as String?, publishedAt: row['publishedAt'] as String?, content: row['content'] as String?, author: row['author'] as String?, source: _sourceConverter.decode(row['source'] as String), query: row['qu'] as String?),
-        arguments: [fromDate, toDate, ...queries]);
+        arguments: [query, fromDate, toDate, page, pageSize]);
   }
 
   @override

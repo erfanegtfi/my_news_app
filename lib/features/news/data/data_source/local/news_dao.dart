@@ -5,14 +5,17 @@ import 'package:my_news_app/features/news/data/models/news_data_model.dart';
 abstract class NewstDao {
   @Query("""
   SELECT * FROM news 
-  WHERE qu IN (:queries)
+  WHERE  qu = :query
   AND publishedAt >= :fromDate AND publishedAt <= :toDate
-  ORDER BY publishedAt DESC
+  ORDER BY publishedAt DESC 
+  LIMIT :pageSize OFFSET (:page - 1) * :pageSize
   """)
   Future<List<NewsDataModel>> getAllNews(
-    List<String> queries,
+    String query,
     String fromDate,
     String toDate,
+    int page,
+    int pageSize,
   );
 
   @Query("""

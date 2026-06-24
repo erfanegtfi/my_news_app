@@ -1,5 +1,5 @@
 enum LoadStrategy {
-  offlineFirst,
+  localFirst,
   remote,
-  offline;
+  local;
 }

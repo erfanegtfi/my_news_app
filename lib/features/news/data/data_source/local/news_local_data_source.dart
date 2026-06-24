@@ -2,10 +2,11 @@ import 'package:injectable/injectable.dart';
 import 'package:my_news_app/database/database.dart';
 import 'package:my_news_app/features/news/data/models/news_data_model.dart';
 import 'package:my_news_app/features/news/domain/usecases/params/news_offline_param.dart';
+import 'package:my_news_app/features/news/domain/usecases/params/news_params.dart';
 
 abstract class NewsLocalDataSource {
   Stream<List<NewsDataModel>> getAllNewsAsStream(NewsOfflineParam params);
-  Future<List<NewsDataModel>> getAllNews(NewsOfflineParam params);
+  Future<List<NewsDataModel>> getAllNews(NewsParam params);
   Future<void> insertNews(List<NewsDataModel> news);
 }
 
@@ -21,8 +22,8 @@ class NewsLocalDataSourceImpl implements NewsLocalDataSource {
   }
 
   @override
-  Future<List<NewsDataModel>> getAllNews(NewsOfflineParam params) {
-    return database.newstDao.getAllNews(params.queries ?? [], params.fromDate, params.toDate); //  params.sortBy
+  Future<List<NewsDataModel>> getAllNews(NewsParam params) {
+    return database.newstDao.getAllNews(params.query, params.fromDate, params.toDate, params.page, params.pageSize); //  params.sortBy
   }
 
   @override
