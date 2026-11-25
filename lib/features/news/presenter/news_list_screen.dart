@@ -1,6 +1,5 @@
 // ignore_for_file: must_call_super
 
-import 'package:app_utils/view_state.dart';
 import 'package:app_widgets/base/my_scaffold.dart';
 import 'package:app_widgets/utils_message.dart';
 import 'package:app_widgets/widget_item_not_found.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_news_app/di/locator.dart';
-import 'package:my_news_app/features/news/domain/entities/news.dart';
 import 'package:app_widgets/error_widget.dart';
 import 'package:my_news_app/features/news/presenter/news_content_screen.dart';
 import 'package:my_news_app/navigation/navigation_service.dart';
@@ -58,47 +56,39 @@ class NewsListScreenState extends State<NewsListScreen> {
   }
 
   Widget newsListView() {
-    return BlocConsumer<GetNewsListCubit, ViewState<List<News>>>(
+    return BlocConsumer<GetNewsListCubit, GetNewsListViewState>(
       bloc: getNewsListCubit,
       builder: (context, state) {
-        return state.when(
-          init: () => SizedBox(),
-          loading: () => Center(child: CircularProgressIndicator()),
-          success: (news) {
-            isLoading = false;
-            if (news.isNotEmpty) {
-              return ListView.separated(
-                  controller: controller,
-                  separatorBuilder: (context, index) {
-                    return Divider();
-                  },
-                  itemBuilder: (context, index) => NewsItem(
-                        theme: theme,
-                        news: news[index],
-                        onTap: () {
-                          locator<NavigationService>().push(NewsContentScreen(news: news[index]));
-                        },
-                        key: ValueKey(news[index].title),
-                      ),
-                  itemCount: news.length);
-            } else {
-              return ListView(children: [SizedBox(height: 200.h), const ItemNotFoundWidget(message: AppText.newsNotFound)]);
-            }
-          },
-          serverError: (error) => getErrorWidget(error),
-        );
+        if (state.loading == true)
+          return Center(child: CircularProgressIndicator());
+        else if (state.allNews?.isNotEmpty == true) {
+          isLoading = false;
+          return ListView.separated(
+              controller: controller,
+              separatorBuilder: (context, index) {
+                return Divider();
+              },
+              itemBuilder: (context, index) => NewsItem(
+                    theme: theme,
+                    news: state.allNews![index],
+                    onTap: () {
+                      locator<NavigationService>().push(NewsContentScreen(news: state.allNews![index]));
+                    },
+                    key: ValueKey(state.allNews?[index].title),
+                  ),
+              itemCount: state.allNews?.length ?? 0);
+        } else if (state.allNews?.isEmpty == true)
+          return ListView(children: [SizedBox(height: 200.h), const ItemNotFoundWidget(message: AppText.newsNotFound)]);
+        else if (state.error != null) return getErrorWidget(state.error!);
+
+        return SizedBox();
       },
       buildWhen: (previous, current) {
-        if (current is ServerError && (current as ServerError).error.appException is NetworkConnectionException) return false;
+        if (current.error?.appException is NetworkConnectionException) return false;
         return true;
       },
       listener: (context, state) {
-        state.maybeWhen(
-          orElse: () {},
-          serverError: (error) {
-            showToast(error.message);
-          },
-        );
+        if (state.error != null) showToast(state.error?.message);
       },
     );
   }

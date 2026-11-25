@@ -1,5 +1,0 @@
-enum LoadStrategy {
-  offlineFirst,
-  remote,
-  offline;
-}
